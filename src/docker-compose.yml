@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+
+    data:
+        container_name: sqlserver
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        ports: 
+            - "1433:1433"
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=yourStrongPassword12!@
+        volumes: 
+            - sqldata:/var/opt/mssql
+        networks: 
+            - transaction-per-request-network
+
+    web:
+        container_name: transaction-per-request
+        image: scalefocus/transaction-per-request-web-service:1.0
+        build: 
+            context: ./
+            dockerfile: ./TransactionPerRequest.Api/Dockerfile
+        ports:
+            - "5001:80"
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=TransactionPerRequest;User Id=sa;Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+        restart: on-failure
+        volumes:
+            - data-protection:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - transaction-per-request-network
+        depends_on:
+            - data
+            - migrator
+
+    migrator:
+        container_name: database-migrator
+        image: scalefocus/database-migrator:1.0
+        build: 
+            context: ./
+            dockerfile: ./TransactionPerRequest.Migration/Dockerfile
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=TransactionPerRequest;User Id=sa;Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+        restart: on-failure
+        networks: 
+            - transaction-per-request-network
+        depends_on:
+            - data
+
+networks:
+    transaction-per-request-network:
+volumes:
+    sqldata:
+    data-protection:

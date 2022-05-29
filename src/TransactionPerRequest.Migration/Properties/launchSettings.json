@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TransactionPerRequest.Migration": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

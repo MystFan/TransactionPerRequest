@@ -67,7 +67,7 @@ namespace TransactionPerRequest.Data.Migrations
 
                     b.HasIndex("BlogId");
 
-                    b.ToTable("Post");
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("Post", b =>

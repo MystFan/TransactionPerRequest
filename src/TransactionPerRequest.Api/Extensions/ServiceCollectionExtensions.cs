@@ -20,7 +20,7 @@ namespace TransactionPerRequest.Api.Extensions
                 return new SqlConnection(connectionString);
             });
 
-            services.AddScoped((serviceProvider) =>
+            services.AddScoped<IDbTransaction>((serviceProvider) =>
             {
                 IDbConnection dbConnection = serviceProvider.GetService<IDbConnection>();
                 dbConnection.Open();
@@ -28,7 +28,7 @@ namespace TransactionPerRequest.Api.Extensions
                 return dbConnection.BeginTransaction(level);
             });
 
-            services.AddScoped((serviceProvider) =>
+            services.AddScoped<DbContextOptions<ApplicationDbContext>>((serviceProvider) =>
             {
                 IDbConnection connection = serviceProvider.GetRequiredService<IDbConnection>();
                 var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -38,7 +38,7 @@ namespace TransactionPerRequest.Api.Extensions
                 return options;
             });
 
-            services.AddScoped((serviceProvider) =>
+            services.AddScoped<ApplicationDbContext>((serviceProvider) =>
             {
                 var options = serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>();
                 IDbTransaction dbTransaction = serviceProvider.GetService<IDbTransaction>();

@@ -11,7 +11,7 @@ namespace TransactionPerRequest.Data.Migrations
         {
             migrationBuilder.AddColumn<DateTime>(
                 name: "CreatedDate",
-                table: "Post",
+                table: "Posts",
                 type: "datetime2",
                 nullable: true);
         }
@@ -20,7 +20,7 @@ namespace TransactionPerRequest.Data.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "CreatedDate",
-                table: "Post");
+                table: "Posts");
         }
     }
 }

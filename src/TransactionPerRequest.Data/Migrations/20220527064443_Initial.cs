@@ -22,7 +22,7 @@ namespace TransactionPerRequest.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Post",
+                name: "Posts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -33,9 +33,9 @@ namespace TransactionPerRequest.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Post", x => x.Id);
+                    table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Post_Blogs_BlogId",
+                        name: "FK_Posts_Blogs_BlogId",
                         column: x => x.BlogId,
                         principalTable: "Blogs",
                         principalColumn: "Id",
@@ -43,15 +43,15 @@ namespace TransactionPerRequest.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Post_BlogId",
-                table: "Post",
+                name: "IX_Posts_BlogId",
+                table: "Posts",
                 column: "BlogId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Post");
+                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "Blogs");
